@@ -45,26 +45,26 @@ public class GPSTracker extends Service implements LocationListener {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
            isGPSEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            if(isGPSEnabled && !isNetworkEnabled)
+            if(!isGPSEnabled && !isNetworkEnabled)
             {
 
             }
             else{
                 this.canGetLocation=true;
-                if(isNetworkEnabled){
-                    if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+                if(isNetworkEnabled) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return null;
 
                     }
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTANCE_FOR_UPDATES,this);
-                    if(locationManager!=null)
-                    {
-                        location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if(location!=null){
-                            latitude=location.getLatitude();
-                            longitude=location.getLongitude();
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_FOR_UPDATES, this);
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
                         }
                     }
+                }
                     if(isGPSEnabled){
                         if(location==null){
                             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTANCE_FOR_UPDATES,this);
@@ -74,7 +74,7 @@ public class GPSTracker extends Service implements LocationListener {
                             }
                         }
                     }
-                }
+
             }
 
 
