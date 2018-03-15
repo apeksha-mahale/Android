@@ -1,6 +1,7 @@
 package com.example.myambulanceapplication;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -39,6 +40,7 @@ public class GPSTracker extends Service implements LocationListener {
         this.mContext=context;
         getLocation();
     }
+    
     public Location getLocation()
     {
         try{
@@ -52,7 +54,7 @@ public class GPSTracker extends Service implements LocationListener {
             else{
                 this.canGetLocation=true;
                 if(isNetworkEnabled) {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission((Activity)mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( (Activity)mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return null;
 
                     }
@@ -68,10 +70,14 @@ public class GPSTracker extends Service implements LocationListener {
                     if(isGPSEnabled){
                         if(location==null){
                             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTANCE_FOR_UPDATES,this);
-                            if(location!=null){
-                                latitude=location.getLatitude();
-                                longitude=location.getLongitude();
+                            if(locationManager!=null){
+                                location=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if(location!=null){
+                                    latitude=location.getLatitude();
+                                    longitude=location.getLongitude();
+                                }
                             }
+
                         }
                     }
 
