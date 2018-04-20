@@ -48,10 +48,11 @@ public class MainActivity extends AppCompatActivity {
                 if(gps.canGetLocation()){
                     double latitude=gps.getLatitude();
                     double longitude=gps.getLongitude();
-                    database=FirebaseDatabase.getInstance();
-                    location.setText(latitude+""+longitude);
-                    myRef=database.getReference("Location");
-                    myRef.setValue(latitude+""+longitude);
+                    location.setText("Your location is " + latitude+""+longitude);
+                    DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("AmbulanceList");
+                    DatabaseReference zero = myRef1.child("2");
+                    DatabaseReference zero1 = zero.child("Location");
+                    zero1.setValue(latitude+","+longitude);
                 }
                 else{
                     gps.showSettingsAlert();

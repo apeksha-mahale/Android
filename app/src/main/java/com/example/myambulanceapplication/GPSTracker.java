@@ -40,7 +40,7 @@ public class GPSTracker extends Service implements LocationListener {
         this.mContext=context;
         getLocation();
     }
-    
+
     public Location getLocation()
     {
         try{
