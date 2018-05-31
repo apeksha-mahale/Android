@@ -8,6 +8,7 @@ import android.test.mock.MockPackageManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION=2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
 
+    String id = "0";
+
     GPSTracker gps;
     TextView location;
-
+    Button stateButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +42,19 @@ public class MainActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
+        stateButton = (Button) findViewById(R.id.stateButton);
         btnShowLocation=(Button) findViewById(R.id.button);
+        stateButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("AmbulanceList");
+                DatabaseReference zero = myRef1.child(id);
+                DatabaseReference zero1 = zero.child("State");
+                zero1.setValue("0");
+                Toast.makeText(getApplicationContext(), "Freed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     double longitude=gps.getLongitude();
                     location.setText("Your location is " + latitude+""+longitude);
                     DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("AmbulanceList");
-                    DatabaseReference zero = myRef1.child("2");
+                    DatabaseReference zero = myRef1.child(id);
                     DatabaseReference zero1 = zero.child("Location");
                     zero1.setValue(latitude+","+longitude);
                 }
